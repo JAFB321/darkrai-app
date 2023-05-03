@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/react";
 import { AuthPage } from "@refinedev/chakra-ui";
 
 import { GetServerSideProps } from "next";
@@ -7,9 +8,16 @@ export default function Login() {
   return (
     <AuthPage
       type="login"
-      formProps={{
-        defaultValues: { email: "demo@refine.dev", password: "demodemo" },
+      title={<Heading>Darkrai</Heading>}
+      contentProps={{
+        title: 'Iniciar sesion',
       }}
+      formProps={{
+        defaultValues: { email: "izak@darkrai.com", password: "12345" },
+      }}
+      
+      registerLink={<></>}
+      forgotPasswordLink={<></>}
     />
   );
 }
