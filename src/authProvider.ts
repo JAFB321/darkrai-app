@@ -1,27 +1,43 @@
 import { AuthBindings } from "@refinedev/core";
 import nookies from "nookies";
+import axios from 'axios'
+import { User } from "./types";
 
 const mockUsers = [
   {
     name: "John Doe",
     email: "johndoe@mail.com",
     roles: ["admin"],
-    avatar: "https://i.pravatar.cc/150?img=1",
   },
   {
     name: "Jane Doe",
     email: "janedoe@mail.com",
     roles: ["editor"],
-    avatar: "https://i.pravatar.cc/150?img=1",
   },
 ];
 
 export const authProvider: AuthBindings = {
   login: async ({ email, username, password, remember }) => {
     // Suppose we actually send a request to the back end here.
-    const user = mockUsers[0];
+    
 
-    if (user) {
+    const SERVER_API_URL = localStorage.getItem('SERVER_API_URL')
+    const response = await axios.post(SERVER_API_URL+'/user/auth', {
+      username: email || username,
+      password
+    }).catch((error) => ({error: error.message} as any))
+
+    if(response.error) return {
+      success: false,
+      error: {
+        name: "LoginError",
+        message: "Invalid username or password",
+      },
+    };
+
+    const user: User = response.data.data
+
+    if (user?.id) {
       nookies.set(null, "auth", JSON.stringify(user), {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
@@ -39,6 +55,7 @@ export const authProvider: AuthBindings = {
         message: "Invalid username or password",
       },
     };
+    
   },
   logout: async () => {
     nookies.destroy(null, "auth");
