@@ -14,6 +14,7 @@ import {
 } from "@refinedev/chakra-ui";
 import { useGetIdentity } from "@refinedev/core";
 import { IconMoon, IconSun } from "@tabler/icons";
+import { User } from "src/types";
 
 type IUser = {
   id: number;
@@ -22,7 +23,7 @@ type IUser = {
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = () => {
-  const { data: user } = useGetIdentity<IUser>();
+  const { data: user } = useGetIdentity<User>();
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -58,14 +59,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = () => {
             h="24px"
           />
         </IconButton>
-        {(user?.avatar || user?.name) && (
+        {(user?.nombre) && (
           <HStack>
-            {user?.name && (
+            {user?.nombre && (
               <Text size="sm" fontWeight="bold">
-                {user.name}
+                {user.nombre}
               </Text>
             )}
-            <Avatar size="sm" name={user?.name} src={user?.avatar} />
+            <Avatar size="sm" name={user?.nombre}  />
           </HStack>
         )}
       </HStack>
