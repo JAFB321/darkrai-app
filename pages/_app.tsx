@@ -1,9 +1,10 @@
+import "react-datepicker/dist/react-datepicker.css";
 import {
   RefineThemes,
   ThemedLayoutV2,
   notificationProvider,
 } from "@refinedev/chakra-ui";
-import { GitHubBanner, Refine } from "@refinedev/core";
+import { Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider, {
   UnsavedChangesNotifier,
@@ -13,10 +14,14 @@ import { AppProps } from "next/app";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { Header } from "@components/header";
-import dataProvider from "@refinedev/simple-rest";
+// import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
+import { dataProvider } from "src/rest-data-provider";
+import { useEffect, useState } from "react";
 
-const API_URL = "https://api.fake-rest.refine.dev";
+const serverIp = process.env.SERVER_API_IP
+
+const API_URL = `http://${serverIp}:3003/api`;
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -27,6 +32,15 @@ type AppPropsWithLayout = AppProps & {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+
+  const [SERVER_API_URL] = useState(API_URL)
+  
+  useEffect(() => {
+    localStorage.setItem('SERVER_API_URL',SERVER_API_URL)
+  }, [SERVER_API_URL])
+  
+  console.log(SERVER_API_URL);
+  
   const renderComponent = () => {
     if (Component.noLayout) {
       return <Component {...pageProps} />;
@@ -41,36 +55,94 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
 
   return (
     <>
-      <GitHubBanner />
       <RefineKbarProvider>
         {/* You can change the theme colors here. example: theme={RefineThemes.Magenta} */}
         <ChakraProvider theme={RefineThemes.Blue}>
           <Refine
             routerProvider={routerProvider}
-            dataProvider={dataProvider(API_URL)}
+            dataProvider={dataProvider(SERVER_API_URL)}
             notificationProvider={notificationProvider}
             authProvider={authProvider}
             resources={[
               {
-                name: "blog_posts",
-                list: "/blog-posts",
-                create: "/blog-posts/create",
-                edit: "/blog-posts/edit/:id",
-                show: "/blog-posts/show/:id",
+                name: "medicamento",
+                list: "/medicamentos",
+                create: "/medicamentos/create",
+                edit: "/medicamentos/edit/:id",
+                show: "/medicamentos/show/:id",
                 meta: {
                   canDelete: true,
                 },
               },
               {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
+                name: "paciente",
+                list: "/pacientes",
+                create: "/pacientes/create",
+                edit: "/pacientes/edit/:id",
+                show: "/pacientes/show/:id",
                 meta: {
                   canDelete: true,
                 },
               },
+              {
+                name: "enfermero",
+                list: "/enfermeros",
+                create: "/enfermeros/create",
+                edit: "/enfermeros/edit/:id",
+                show: "/enfermeros/show/:id",
+                meta: {
+                  canDelete: true,
+                },
+              },
+              {
+                name: "tratamiento",
+                list: "/tratamientos",
+                create: "/tratamientos/create",
+                edit: "/tratamientos/edit/:id",
+                show: "/tratamientos/show/:id",
+                meta: {
+                  canDelete: true,
+                  hide: true
+                },
+              },
+              {
+                name: "plan-medicacion",
+                create: "/plan-medicaciones/create",
+                edit: "/plan-medicaciones/edit/:id",
+                show: "/plan-medicaciones/show/:id",
+                meta: {
+                  canDelete: true,
+                  hide: true
+                },
+              },
+              {
+                name: "suministrar/all",
+                list: "/suministrar",
+                meta: {
+                  label: 'Suministrar',
+                }
+                
+              },
+              {
+                name: "contenedor",
+                list: "/contenedor",
+                edit: "/contenedor/edit/:id",
+                show: "/contenedor/show/:id",
+                meta: {
+                  label: 'Contenedores',
+                }
+                
+              },
+              // {
+              //   name: "categories",
+              //   list: "/categories",
+              //   create: "/categories/create",
+              //   edit: "/categories/edit/:id",
+              //   show: "/categories/show/:id",
+              //   meta: {
+              //     canDelete: true,
+              //   },
+              // },
             ]}
             options={{
               syncWithLocation: true,
