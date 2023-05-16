@@ -1,13 +1,8 @@
 import { useShow, useOne, useCustom, useApiUrl } from "@refinedev/core";
 import {
     Show,
-    NumberField,
-    TagField,
-    DateField,
-    BooleanField,
-    ShowButton,
 } from "@refinedev/chakra-ui";
-import { Badge, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Heading, Highlight, HStack, Progress, SimpleGrid, Text } from "@chakra-ui/react";
+import { Badge, Box, Button, Card, CardBody, CardHeader, Heading, Highlight, HStack, Progress, SimpleGrid, Text } from "@chakra-ui/react";
 import { Medicamento, PlanMedicacion, Tratamiento } from "src/types";
 import { formatDate, formatDateTime } from "src/utils/dates";
 import { useEffect } from "react";
@@ -80,7 +75,7 @@ export const PlanMedicacionShow = () => {
 
         <SimpleGrid columns={[1, 2, 4]} spacing={5} mt={4}>
             {dosisData?.map((dosis, i) => (
-                <Card size={['md', 'md', 'sm']}>
+                <Card size={['md', 'md', 'sm']} key={i}>
                 <CardHeader height={35}>
                     <Heading size="sm" mb={2}>
                         {formatDateTime(dosis.fecha || '')}

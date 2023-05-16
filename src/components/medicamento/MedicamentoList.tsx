@@ -22,6 +22,7 @@ import {
     Box,
 } from "@chakra-ui/react";
 import { IconChevronRight, IconChevronLeft } from "@tabler/icons";
+import { formatDate, formatDateMonthYear } from "src/utils/dates";
 
 export const MedicamentoList: React.FC<IResourceComponentsProps> = () => {
     const columns = React.useMemo<ColumnDef<any>[]>(
@@ -34,7 +35,20 @@ export const MedicamentoList: React.FC<IResourceComponentsProps> = () => {
             {
                 id: "nombre",
                 accessorKey: "nombre",
-                header: "Nombre",
+                header: "Sustancia activa",
+            },
+            {
+                id: "lote",
+                accessorKey: "lote",
+                header: "Lote",
+                cell: (original) => original.getValue() ? original.getValue() : 'Sin lote'
+
+            },
+            {
+                id: "caducidad",
+                accessorKey: "caducidad",
+                header: "Caducidad",
+                cell: (original) => original.getValue() ? formatDateMonthYear(original.getValue()+'') : 'Sin fecha'
             },
             {
                 id: "concentrado",
@@ -93,7 +107,7 @@ export const MedicamentoList: React.FC<IResourceComponentsProps> = () => {
     }));
 
     return (
-        <List title='Medicamentos_'>
+        <List title='Medicamentos'>
             <TableContainer whiteSpace="pre-line">
                 <Table variant="simple">
                     <Thead>

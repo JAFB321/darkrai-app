@@ -45,14 +45,47 @@ export const PacienteShow = () => {
                 Id
             </Heading>
             <NumberField value={record?.id ?? ""} />
+
             <Heading as="h5" size="sm" mt={4}>
                 Nombre
             </Heading>
             <TextField value={record?.nombre} />
+
+            <Heading as="h5" size="sm" mt={4}>
+                Edad
+            </Heading>
+            <TextField value={record?.edad && (record.edad+ ' años')} />
+
+            <Heading as="h5" size="sm" mt={4}>
+                Genero
+            </Heading>
+            <TextField value={record?.genero}/>
+
+            <Heading as="h5" size="sm" mt={4}>
+                Peso
+            </Heading>
+            <TextField value={record?.peso && (record?.peso + ' Kg')}/>
+
+            <Heading as="h5" size="sm" mt={4}>
+                Altura
+            </Heading>
+            <TextField value={record?.altura && (record?.altura + ' metros')}/>
+
+            <Heading as="h5" size="sm" mt={4}>
+                Contacto de emergencia
+            </Heading>
+            <TextField value={record?.contactoEmergencia || 'Sin contacto de emergencia'}/>
+
+            <Heading as="h5" size="sm" mt={4}>
+                Numero de seguridad social
+            </Heading>
+            <TextField value={record?.noSeguridadSocial || 'Sin numero de seguridad social'}/>
+
             <Heading as="h5" size="sm" mt={4}>
                 Tratamientos
             </Heading>
             {tratamientosText || 'Sin tratamientos'}
+
         </Show >
     );
 };

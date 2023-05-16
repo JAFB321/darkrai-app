@@ -20,14 +20,11 @@ import {
     Button,
     IconButton,
     Box,
+    Badge,
 } from "@chakra-ui/react";
-import { IconChevronRight, IconChevronLeft } from "@tabler/icons";
-import { useRouter } from "next/router";
 import { Paciente } from "src/types";
 
 export const PacienteList: React.FC<IResourceComponentsProps> = () => {
-    const router = useRouter()
-
     const columns = React.useMemo<ColumnDef<Paciente>[]>(
         () => [
             {
@@ -44,16 +41,13 @@ export const PacienteList: React.FC<IResourceComponentsProps> = () => {
                 id: "tratamientos",
                 accessorKey: "id",
                 header: "Informacion",
-                cell: function render({ getValue, cell }) {
+                cell: function render({ cell }) {
                     const nTratamientos = cell.row.original.tratamientos?.length 
-                    return (
-                        <Button 
-                        width={150}
-                        colorScheme={!nTratamientos ? 'orange' : 'blue'}
-                        onClick={() => router.push('/tratamientos?pacienteId=' + getValue())}>
-                            {nTratamientos ? nTratamientos+ ' Tratamientos': 'Ninguno'} 
-                        </Button>
-                    );
+                    if(nTratamientos){
+                        return <Badge colorScheme="blue">{nTratamientos} Tratamientos</Badge>
+                    }else {
+                        return <Badge colorScheme="yellow">Sin tratamientos</Badge>
+                    }
                 },
             },
             {
@@ -135,69 +129,7 @@ export const PacienteList: React.FC<IResourceComponentsProps> = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
-            <Pagination
-                current={current}
-                pageCount={pageCount}
-                setCurrent={setCurrent}
-            />
+
         </List>
-    );
-};
-
-type PaginationProps = {
-    current: number;
-    pageCount: number;
-    setCurrent: (page: number) => void;
-};
-
-const Pagination: React.FC<PaginationProps> = ({
-    current,
-    pageCount,
-    setCurrent,
-}) => {
-    const pagination = usePagination({
-        current,
-        pageCount,
-    });
-
-    return (
-        <Box display="flex" justifyContent="flex-end">
-            <HStack my="3" spacing="1">
-                {pagination?.prev && (
-                    <IconButton
-                        aria-label="previous page"
-                        onClick={() => setCurrent(current - 1)}
-                        disabled={!pagination?.prev}
-                        variant="outline"
-                    >
-                        <IconChevronLeft size="18" />
-                    </IconButton>
-                )}
-
-                {pagination?.items.map((page) => {
-                    if (typeof page === "string")
-                        return <span key={page}>...</span>;
-
-                    return (
-                        <Button
-                            key={page}
-                            onClick={() => setCurrent(page)}
-                            variant={page === current ? "solid" : "outline"}
-                        >
-                            {page}
-                        </Button>
-                    );
-                })}
-                {pagination?.next && (
-                    <IconButton
-                        aria-label="next page"
-                        onClick={() => setCurrent(current + 1)}
-                        variant="outline"
-                    >
-                        <IconChevronRight size="18" />
-                    </IconButton>
-                )}
-            </HStack>
-        </Box>
     );
 };

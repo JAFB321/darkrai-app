@@ -3,6 +3,7 @@ const nodeIP = require('ip')
 module.exports = {
   experimental: {
     newNextLinkBehavior: true,
+    nextScriptWorkers: true,
   },
   reactStrictMode: true,
   swcMinify: true,

@@ -16,12 +16,16 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Header } from "@components/header";
 // import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
-import { dataProvider } from "src/rest-data-provider";
+import { dataProvider } from "src/providers/rest-data-provider";
+import { liveProvider } from "src/providers/alertas-live-provider";
 import { useEffect, useState } from "react";
+import { AlertasClient } from "src/providers/alertas-live-provider/AlertasClient";
 
 const serverIp = process.env.SERVER_API_IP
 
 const API_URL = `http://${serverIp}:3003/api`;
+
+const alertsClient = new AlertasClient(API_URL)
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -62,6 +66,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
             routerProvider={routerProvider}
             dataProvider={dataProvider(SERVER_API_URL)}
             notificationProvider={notificationProvider}
+            liveProvider={liveProvider(alertsClient)}
             authProvider={authProvider}
             resources={[
               {
