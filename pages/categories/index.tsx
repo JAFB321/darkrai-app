@@ -9,6 +9,11 @@ export default function CategoryList() {
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { authenticated, redirectTo } = await authProvider.check(context);
 
+  if(authProvider.getPermissions){
+    const permissions = await authProvider.getPermissions() as any
+    console.log(permissions);
+  }
+
   if (!authenticated) {
     return {
       props: {},

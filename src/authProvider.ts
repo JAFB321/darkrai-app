@@ -1,20 +1,7 @@
 import { AuthBindings } from "@refinedev/core";
 import nookies from "nookies";
 import axios from 'axios'
-import { User } from "./types";
-
-const mockUsers = [
-  {
-    name: "John Doe",
-    email: "johndoe@mail.com",
-    roles: ["admin"],
-  },
-  {
-    name: "Jane Doe",
-    email: "janedoe@mail.com",
-    roles: ["editor"],
-  },
-];
+import { User, UserRoles } from "./types";
 
 export const authProvider: AuthBindings = {
   login: async ({ email, username, password, remember }) => {
@@ -78,11 +65,11 @@ export const authProvider: AuthBindings = {
       redirectTo: "/login",
     };
   },
-  getPermissions: async () => {
-    const auth = nookies.get()["auth"];
+  getPermissions: async (ctx) => {
+    const auth = nookies.get(ctx)["auth"]
     if (auth) {
-      const parsedUser = JSON.parse(auth);
-      return parsedUser.roles;
+      const parsedAuth = JSON.parse(auth) 
+      return {rol: parsedAuth.rol};
     }
     return null;
   },

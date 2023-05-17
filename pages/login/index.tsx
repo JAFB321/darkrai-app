@@ -7,13 +7,14 @@ import { authProvider } from "src/authProvider";
 export default function Login() {
   return (
     <AuthPage
+
       type="login"
       title={<Heading>Darkrai</Heading>}
       contentProps={{
         title: 'Iniciar sesion',
       }}
       formProps={{
-        defaultValues: { email: "izak@darkrai.com", password: "12345" },
+        defaultValues: { email: "izak@darkrai.com" },
       }}
       
       registerLink={<></>}

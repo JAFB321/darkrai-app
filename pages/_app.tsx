@@ -20,6 +20,8 @@ import { dataProvider } from "src/providers/rest-data-provider";
 import { liveProvider } from "src/providers/alertas-live-provider";
 import { useEffect, useState } from "react";
 import { AlertasClient } from "src/providers/alertas-live-provider/AlertasClient";
+import AuthContext from "src/context/authContext";
+import { adminResources, enfermeroResources } from "src/utils/resources";
 
 const serverIp = process.env.SERVER_API_IP
 
@@ -35,7 +37,11 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element { 
+  // const { data: permissionsData } = usePermissions();
+  // const { data: user } = useGetIdentity<User>();
+  
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const [SERVER_API_URL] = useState(API_URL)
   
@@ -51,7 +57,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     }
 
     return (
-      <ThemedLayoutV2 Header={Header}>
+      <ThemedLayoutV2 Header={Header} >
         <Component {...pageProps} />
       </ThemedLayoutV2>
     );
@@ -59,6 +65,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
 
   return (
     <>
+      <AuthContext.Provider value={{isAdmin, setIsAdmin}}>
       <RefineKbarProvider>
         {/* You can change the theme colors here. example: theme={RefineThemes.Magenta} */}
         <ChakraProvider theme={RefineThemes.Blue}>
@@ -68,90 +75,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
             notificationProvider={notificationProvider}
             liveProvider={liveProvider(alertsClient)}
             authProvider={authProvider}
-            resources={[
-              {
-                name: "medicamento",
-                list: "/medicamentos",
-                create: "/medicamentos/create",
-                edit: "/medicamentos/edit/:id",
-                show: "/medicamentos/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "paciente",
-                list: "/pacientes",
-                create: "/pacientes/create",
-                edit: "/pacientes/edit/:id",
-                show: "/pacientes/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "enfermero",
-                list: "/enfermeros",
-                create: "/enfermeros/create",
-                edit: "/enfermeros/edit/:id",
-                show: "/enfermeros/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "tratamiento",
-                list: "/tratamientos",
-                create: "/tratamientos/create",
-                edit: "/tratamientos/edit/:id",
-                show: "/tratamientos/show/:id",
-                meta: {
-                  canDelete: true,
-                  hide: true
-                },
-              },
-              {
-                name: "plan-medicacion",
-                create: "/plan-medicaciones/create",
-                edit: "/plan-medicaciones/edit/:id",
-                show: "/plan-medicaciones/show/:id",
-                meta: {
-                  canDelete: true,
-                  hide: true
-                },
-              },
-              {
-                name: "suministrar/all",
-                list: "/suministrar",
-                meta: {
-                  label: 'Suministrar',
-                }
-                
-              },
-              {
-                name: "contenedor",
-                list: "/contenedor",
-                edit: "/contenedor/edit/:id",
-                show: "/contenedor/show/:id",
-                meta: {
-                  label: 'Contenedores',
-                }
-                
-              },
-              // {
-              //   name: "categories",
-              //   list: "/categories",
-              //   create: "/categories/create",
-              //   edit: "/categories/edit/:id",
-              //   show: "/categories/show/:id",
-              //   meta: {
-              //     canDelete: true,
-              //   },
-              // },
-            ]}
+            resources={isAdmin ? adminResources : enfermeroResources}
             options={{
               syncWithLocation: true,
-              warnWhenUnsavedChanges: true,
+              warnWhenUnsavedChanges: true, 
             }}
           >
             {renderComponent()}
@@ -160,6 +87,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
           </Refine>
         </ChakraProvider>
       </RefineKbarProvider>
+      </AuthContext.Provider>
+
     </>
   );
 }

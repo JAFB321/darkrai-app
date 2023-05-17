@@ -2,6 +2,7 @@ import { TratamientoShow } from "@components/tratamiento/TratamientoShow";
 import { ChakraUIShowInferencer } from "@refinedev/inferencer/chakra-ui";
 import { GetServerSideProps } from "next";
 import { authProvider } from "src/authProvider";
+import { havePermission, redirectToHome } from "src/utils/auth";
 
 export default function TratamientoShowPage() {
   return <TratamientoShow />;
@@ -10,6 +11,7 @@ export default function TratamientoShowPage() {
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { authenticated, redirectTo } = await authProvider.check(context);
+
 
   if (!authenticated) {
     return {

@@ -10,6 +10,8 @@ export default function CategoryListPage() {
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
     const { authenticated, redirectTo } = await authProvider.check(context);
 
+    
+
     if (!authenticated) {
         return {
             props: {},
