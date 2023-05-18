@@ -2,6 +2,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   RefineThemes,
   ThemedLayoutV2,
+  Title,
   notificationProvider,
 } from "@refinedev/chakra-ui";
 import { Refine } from "@refinedev/core";
@@ -12,7 +13,7 @@ import routerProvider, {
 import type { NextPage } from "next";
 import { AppProps } from "next/app";
 
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Heading, Icon, Image, Img } from "@chakra-ui/react";
 import { Header } from "@components/header";
 // import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
@@ -56,8 +57,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
       return <Component {...pageProps} />;
     }
 
+    const title = <> 
+      <Heading size={'lg'}> Darkrai</Heading>
+      <Image ml={3} boxSize={50}  src="/logo.png"></Image>
+    </>
+
     return (
-      <ThemedLayoutV2 Header={Header} >
+      <ThemedLayoutV2 Header={Header} Title={() => title}>
         <Component {...pageProps} />
       </ThemedLayoutV2>
     );

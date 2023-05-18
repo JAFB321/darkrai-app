@@ -7,7 +7,6 @@ import { authProvider } from "src/authProvider";
 export default function Login() {
   return (
     <AuthPage
-
       type="login"
       title={<Heading>Darkrai</Heading>}
       contentProps={{

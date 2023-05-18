@@ -8,17 +8,17 @@ import { AuthRoles } from "src/utils/auth";
 
 export default function PacienteListPage() {
 
-  const authContext = useContext(AuthContext)
+  const { isAdmin, setIsAdmin } = useContext(AuthContext)
   const { data: permissions } = usePermissions<AuthRoles>()
   
   useEffect (() => {
-     if(permissions?.rol === 'admin' && !authContext.isAdmin){
-      authContext.setIsAdmin(true)
+     if(permissions?.rol === 'admin' && !isAdmin){
+      setIsAdmin(true)
      }
-     if(permissions?.rol === 'enfermero' && authContext.isAdmin){
-      authContext.setIsAdmin(false)
+     else if(permissions?.rol === 'enfermero' && isAdmin){
+      setIsAdmin(false)
      }
-  }, [permissions?.rol])
+  }, [permissions?.rol, isAdmin])
   
   return < PacienteList />;
 }

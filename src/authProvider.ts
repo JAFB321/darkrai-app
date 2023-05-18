@@ -6,8 +6,6 @@ import { User, UserRoles } from "./types";
 export const authProvider: AuthBindings = {
   login: async ({ email, username, password, remember }) => {
     // Suppose we actually send a request to the back end here.
-    
-
     const SERVER_API_URL = localStorage.getItem('SERVER_API_URL')
     const response = await axios.post(SERVER_API_URL+'/user/auth', {
       username: email || username,

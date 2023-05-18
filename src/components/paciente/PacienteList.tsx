@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
@@ -23,8 +23,13 @@ import {
     Badge,
 } from "@chakra-ui/react";
 import { Paciente } from "src/types";
+import AuthContext from "src/context/authContext";
 
 export const PacienteList: React.FC<IResourceComponentsProps> = () => {
+
+    const { isAdmin } = useContext(AuthContext)
+
+
     const columns = React.useMemo<ColumnDef<Paciente>[]>(
         () => [
             {
@@ -61,10 +66,10 @@ export const PacienteList: React.FC<IResourceComponentsProps> = () => {
                                 hideText
                                 recordItemId={getValue() as string}
                             />
-                            <EditButton
+                            {isAdmin && <EditButton
                                 hideText
                                 recordItemId={getValue() as string}
-                            />
+                            />}
                         </HStack>
                     );
                 },

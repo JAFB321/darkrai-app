@@ -63,7 +63,7 @@ export const PlanMedicacionShow = () => {
 
     const dosisElement = <>
         <Heading as="h5" size="md" mt={4} mb={4}>
-         {planMedicacionData?.progresoDosis || 0}% de dosis suministradas
+         {planMedicacionData?.progresoDosis.toFixed(0) || 0}% de dosis suministradas
         </Heading>
 
         <Progress 
@@ -75,7 +75,7 @@ export const PlanMedicacionShow = () => {
 
         <SimpleGrid columns={[1, 2, 4]} spacing={5} mt={4}>
             {dosisData?.map((dosis, i) => (
-                <Card size={['md', 'md', 'sm']} key={i}>
+                <Card size={['md', 'md', 'sm']} key={i} >
                 <CardHeader height={35}>
                     <Heading size="sm" mb={2}>
                         {formatDateTime(dosis.fecha || '')}
@@ -119,7 +119,6 @@ export const PlanMedicacionShow = () => {
                 >
                     Finalizar plan de medicacion
                 </Button>
-                {/* {defaultButtons} */}
             </Box>
         )
         }

@@ -103,7 +103,7 @@ export const TratamientoList: React.FC<IResourceComponentsProps> = () => {
             meta: {
                 params: { pacienteId }
             },
-        }
+        },
     });
 
     const { data: pacienteData, isLoading: pacienteLoading } = useOne<Paciente>({

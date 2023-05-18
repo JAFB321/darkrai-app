@@ -4,6 +4,7 @@ import { Button, ButtonGroup, Card, CardBody, CardHeader, Heading, HStack, Progr
 import { Medicamento } from "src/types";
 import { Contenedor } from "src/types/Contenedor";
 import { useState } from "react";
+import { ContenedorManual } from "./ContenedorManual";
 
 export const ContenedorShow = () => {
     const { queryResult } = useShow<Contenedor>();
@@ -104,7 +105,7 @@ export const ContenedorShow = () => {
 
                 <CardBody>
                     <Progress 
-                        value={((Number(contenedor?.pasoActual)) / Number(contenedor?.pasosTotal)*100)+1} 
+                        value={100-((Number(contenedor?.pasoActual)) / Number(contenedor?.pasosTotal)*100)+1} 
                     />
                     <Text mt={2}>
                         {Number(contenedor?.pasoActual)} de {contenedor?.pasosTotal} pastillas dispensadas
@@ -121,6 +122,7 @@ export const ContenedorShow = () => {
                     </ButtonGroup>
                 </CardBody>
             </Card>
+            <ContenedorManual></ContenedorManual>
         </>
     );
 };
